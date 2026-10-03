@@ -1,0 +1,56 @@
+package com.example.kitabu.data.dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.example.kitabu.data.entity.BookEntity
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface BookDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBook(book: BookEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBooks(books: List<BookEntity>)
+
+    @Query("SELECT * FROM books ORDER BY title ASC")
+    fun getAllBooks(): Flow<List<BookEntity>>
+
+    @Query("""
+        SELECT * FROM books
+        WHERE title LIKE '%' || :query || '%'
+        OR author LIKE '%' || :query || '%'
+        ORDER BY title ASC
+    """)
+    fun searchBooks(query: String): Flow<List<BookEntity>>
+
+    @Query("SELECT * FROM books WHERE isAvailable = 1 ORDER BY title ASC")
+    fun getAvailableBooks(): Flow<List<BookEntity>>
+
+    @Query("SELECT * FROM books WHERE bookId = :bookId LIMIT 1")
+    suspend fun getBookById(bookId: Int): BookEntity?
+
+    @Update
+    suspend fun updateBook(book: BookEntity)
+
+    @Query("""
+        UPDATE books
+        SET isAvailable = :available
+        WHERE bookId = :bookId
+    """)
+    suspend fun updateAvailability(
+        bookId: Int,
+        available: Boolean
+    )
+
+    @Delete
+    suspend fun deleteBook(book: BookEntity)
+
+    @Query("DELETE FROM books")
+    suspend fun deleteAllBooks()
+}
