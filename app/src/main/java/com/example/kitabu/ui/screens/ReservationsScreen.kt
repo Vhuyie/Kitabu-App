@@ -15,9 +15,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Undo
-import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -38,6 +39,7 @@ import com.example.kitabu.ui.theme.KitabuLightPink
 import com.example.kitabu.ui.theme.KitabuPink
 import com.example.kitabu.ui.theme.KitabuSecondaryText
 import com.example.kitabu.ui.theme.KitabuText
+import com.example.kitabu.viewmodel.LibraryViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -45,10 +47,13 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun ReservationsScreen(
-    viewModel: com.example.kitabu.viewmodel.LibraryViewModel
+    viewModel: LibraryViewModel
 ) {
 
-    val bookings by viewModel.activeBookings
+    val pendingBookings by viewModel.pendingBookings
+        .collectAsStateWithLifecycle()
+
+    val reservedBookings by viewModel.reservedBookings
         .collectAsStateWithLifecycle()
 
     Column(
@@ -67,13 +72,13 @@ fun ReservationsScreen(
         Spacer(modifier = Modifier.height(6.dp))
 
         Text(
-            text = "Manage your borrowed books",
+            text = "Manage your book reservations",
             color = KitabuSecondaryText
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        if (bookings.isEmpty()) {
+        if (pendingBookings.isEmpty() && reservedBookings.isEmpty()) {
 
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -90,7 +95,7 @@ fun ReservationsScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = "No active reservations",
+                    text = "No reservations",
                     color = KitabuText,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -107,12 +112,34 @@ fun ReservationsScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
+                // PENDING RESERVATIONS
                 items(
-                    items = bookings,
+                    items = pendingBookings,
                     key = { it.booking.bookingId }
                 ) { reservation ->
 
-                    ReservationCard(
+                    PendingReservationCard(
+                        reservation = reservation,
+                        onAccept = {
+                            viewModel.acceptBooking(
+                                reservation.booking.bookingId
+                            )
+                        },
+                        onCancel = {
+                            viewModel.cancelBooking(
+                                reservation.booking.bookingId
+                            )
+                        }
+                    )
+                }
+
+                // RESERVED BOOKS
+                items(
+                    items = reservedBookings,
+                    key = { it.booking.bookingId }
+                ) { reservation ->
+
+                    ReservedBookCard(
                         reservation = reservation,
                         onRenew = {
                             viewModel.renewBooking(
@@ -131,8 +158,142 @@ fun ReservationsScreen(
     }
 }
 
+
+// ---------------------------------------------------------
+// PENDING RESERVATION CARD
+// ---------------------------------------------------------
+
 @Composable
-private fun ReservationCard(
+private fun PendingReservationCard(
+    reservation: BookingWithBook,
+    onAccept: () -> Unit,
+    onCancel: () -> Unit
+) {
+
+    val booking = reservation.booking
+    val book = reservation.book
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 3.dp
+        )
+    ) {
+
+        Column(
+            modifier = Modifier.padding(18.dp)
+        ) {
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Icon(
+                    imageVector = Icons.Default.Book,
+                    contentDescription = "Book",
+                    tint = KitabuPink
+                )
+
+                Spacer(modifier = Modifier.padding(6.dp))
+
+                Column {
+
+                    Text(
+                        text = book.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = KitabuText
+                    )
+
+                    Text(
+                        text = book.author,
+                        color = KitabuSecondaryText
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Category: ${book.category}",
+                color = KitabuSecondaryText
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Status: PENDING",
+                color = KitabuPink,
+                style = MaterialTheme.typography.titleSmall
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = "Choose Accept or Cancel.",
+                color = KitabuSecondaryText
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+
+                // ACCEPT
+                Button(
+                    onClick = onAccept,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KitabuPink
+                    )
+                ) {
+
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Accept"
+                    )
+
+                    Spacer(modifier = Modifier.padding(2.dp))
+
+                    Text("Accept")
+                }
+
+                // CANCEL
+                Button(
+                    onClick = onCancel,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = KitabuLightPink,
+                        contentColor = KitabuPink
+                    )
+                ) {
+
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Cancel"
+                    )
+
+                    Spacer(modifier = Modifier.padding(2.dp))
+
+                    Text("Cancel")
+                }
+            }
+        }
+    }
+}
+
+
+// ---------------------------------------------------------
+// RESERVED BOOK CARD
+// ---------------------------------------------------------
+
+@Composable
+private fun ReservedBookCard(
     reservation: BookingWithBook,
     onRenew: () -> Unit,
     onReturn: () -> Unit
@@ -204,6 +365,14 @@ private fun ReservationCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            Text(
+                text = "Status: RESERVED",
+                color = KitabuPink,
+                style = MaterialTheme.typography.titleSmall
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -217,7 +386,7 @@ private fun ReservationCard(
                 Spacer(modifier = Modifier.padding(4.dp))
 
                 Text(
-                    text = "Return: ${
+                    text = "Return Date: ${
                         dateFormat.format(
                             Date(booking.returnDeadline)
                         )
@@ -241,6 +410,7 @@ private fun ReservationCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
+                // RENEW
                 Button(
                     onClick = onRenew,
                     modifier = Modifier.weight(1f),
@@ -259,6 +429,7 @@ private fun ReservationCard(
                     Text("Renew")
                 }
 
+                // RETURN
                 Button(
                     onClick = onReturn,
                     modifier = Modifier.weight(1f),

@@ -1,6 +1,5 @@
 package com.example.kitabu.data.repository
 
-import androidx.room.Query
 import androidx.room.withTransaction
 import com.example.kitabu.data.database.AppDatabase
 import com.example.kitabu.data.entity.BookEntity
@@ -24,9 +23,16 @@ class LibraryRepository(
     fun searchBooks(query: String): Flow<List<BookEntity>> =
         bookDao.searchBooks(query)
 
-    fun getActiveBookings(): Flow<List<BookingWithBook>> =
-        bookingDao.getActiveBookingsWithBooks()
+    // Pending bookings waiting for Accept or Cancel
+    fun getPendingBookings(): Flow<List<BookingWithBook>> =
+        bookingDao.getPendingBookingsWithBooks()
 
+    // Accepted/reserved books
+    fun getReservedBookings(): Flow<List<BookingWithBook>> =
+        bookingDao.getReservedBookingsWithBooks()
+
+    // Reserve a book.
+    // The booking starts as PENDING.
     suspend fun reserveBook(
         book: BookEntity,
         userName: String,
@@ -45,11 +51,13 @@ class LibraryRepository(
                 userName = userName,
                 bookingDate = now,
                 returnDeadline = deadline,
-                status = BookingStatus.ACTIVE
+                status = BookingStatus.PENDING
             )
 
             bookingDao.insertBooking(booking)
 
+            // Book is no longer available while the reservation
+            // is waiting for the Accept/Cancel decision.
             bookDao.updateAvailability(
                 bookId = book.bookId,
                 available = false
@@ -57,6 +65,41 @@ class LibraryRepository(
         }
     }
 
+    // Accept a pending booking.
+    suspend fun acceptBooking(
+        bookingId: Int
+    ) {
+
+        bookingDao.updateStatus(
+            bookingId = bookingId,
+            status = BookingStatus.RESERVED
+        )
+    }
+
+    // Cancel a pending booking.
+    suspend fun cancelBooking(
+        bookingId: Int
+    ) {
+
+        database.withTransaction {
+
+            val booking =
+                bookingDao.getBookingById(bookingId)
+                    ?: return@withTransaction
+
+            bookingDao.updateStatus(
+                bookingId = bookingId,
+                status = BookingStatus.CANCELLED
+            )
+
+            bookDao.updateAvailability(
+                bookId = booking.bookOwnerId,
+                available = true
+            )
+        }
+    }
+
+    // Renew a reserved booking.
     suspend fun renewBooking(
         bookingId: Int,
         additionalDays: Int
@@ -75,6 +118,7 @@ class LibraryRepository(
         }
     }
 
+    // Return a reserved book.
     suspend fun returnBook(
         bookingId: Int
     ) {
@@ -85,29 +129,7 @@ class LibraryRepository(
                 bookingDao.getBookingById(bookingId)
                     ?: return@withTransaction
 
-            bookingDao.updateStatus(
-                bookingId,
-                BookingStatus.RETURNED
-            )
-
-            bookDao.updateAvailability(
-                bookId = booking.bookOwnerId,
-                available = true
-            )
-        }
-    }
-
-    suspend fun cancelBooking(
-        bookingId: Int
-    ) {
-
-        database.withTransaction {
-
-            val booking =
-                bookingDao.getBookingById(bookingId)
-                    ?: return@withTransaction
-
-            bookingDao.cancelPendingBooking(bookingId)
+            bookingDao.returnBooking(bookingId)
 
             bookDao.updateAvailability(
                 bookId = booking.bookOwnerId,
@@ -193,5 +215,4 @@ class LibraryRepository(
             password = password
         )
     }
-
 }

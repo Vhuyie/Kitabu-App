@@ -15,7 +15,6 @@ class LibraryViewModel(
     private val repository: LibraryRepository
 ) : ViewModel() {
 
-
     private val searchQuery = MutableStateFlow("")
 
     val books: StateFlow<List<BookEntity>> =
@@ -33,22 +32,29 @@ class LibraryViewModel(
                 initialValue = emptyList()
             )
 
-
-
-    val activeBookings =
-        repository.getActiveBookings()
+    // Book reservations waiting for Accept or Cancel
+    val pendingBookings =
+        repository.getPendingBookings()
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyList()
             )
 
+    // Books that have been accepted/reserved
+    val reservedBookings =
+        repository.getReservedBookings()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
 
     fun search(query: String) {
         searchQuery.value = query
     }
 
-
+    // Reserve a book
     fun reserveBook(
         book: BookEntity,
         userName: String,
@@ -64,8 +70,31 @@ class LibraryViewModel(
         }
     }
 
+    // Accept a pending reservation
+    fun acceptBooking(
+        bookingId: Int
+    ) {
+        viewModelScope.launch {
 
+            repository.acceptBooking(
+                bookingId = bookingId
+            )
+        }
+    }
 
+    // Cancel a pending reservation
+    fun cancelBooking(
+        bookingId: Int
+    ) {
+        viewModelScope.launch {
+
+            repository.cancelBooking(
+                bookingId = bookingId
+            )
+        }
+    }
+
+    // Renew a reserved book
     fun renewBooking(
         bookingId: Int,
         days: Int = 1
@@ -79,8 +108,7 @@ class LibraryViewModel(
         }
     }
 
-
-
+    // Return a reserved book
     fun returnBook(
         bookingId: Int
     ) {
@@ -92,20 +120,7 @@ class LibraryViewModel(
         }
     }
 
-
-
-    fun cancelBooking(
-        bookingId: Int
-    ) {
-        viewModelScope.launch {
-
-            repository.cancelBooking(
-                bookingId = bookingId
-            )
-        }
-    }
-
-
+    // ADMIN - ADD BOOK
     fun addBook(
         title: String,
         author: String,
@@ -124,8 +139,7 @@ class LibraryViewModel(
         }
     }
 
-
-
+    // ADMIN - UPDATE BOOK
     fun updateBook(
         book: BookEntity
     ) {
@@ -135,10 +149,7 @@ class LibraryViewModel(
         }
     }
 
-
     // ADMIN - DELETE BOOK
-
-
     fun deleteBook(
         book: BookEntity
     ) {
@@ -148,10 +159,7 @@ class LibraryViewModel(
         }
     }
 
-
     // STUDENT REGISTRATION
-
-
     fun registerStudent(
         fullName: String,
         studentNumber: String,
@@ -160,7 +168,6 @@ class LibraryViewModel(
         password: String,
         onResult: (Boolean, String) -> Unit
     ) {
-
         viewModelScope.launch {
 
             val result = repository.registerStudent(
@@ -189,16 +196,12 @@ class LibraryViewModel(
         }
     }
 
-
     // STUDENT LOGIN
-
-
     fun loginStudent(
         username: String,
         password: String,
         onResult: (Boolean, String) -> Unit
     ) {
-
         viewModelScope.launch {
 
             val student = repository.loginStudent(
