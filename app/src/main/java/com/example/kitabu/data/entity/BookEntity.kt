@@ -15,5 +15,7 @@ data class BookEntity(
 
     val category: String,
 
+    val imageResId: Int = 0,
+
     val isAvailable: Boolean = true
 )

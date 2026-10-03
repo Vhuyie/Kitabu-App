@@ -1,11 +1,13 @@
 package com.example.kitabu.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -70,27 +74,42 @@ fun BookCard(
                 contentAlignment = Alignment.Center
             ) {
 
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                if (book.imageResId != 0) {
 
-                    Icon(
-                        imageVector = Icons.Default.Book,
-                        contentDescription = "Book cover",
-                        tint = KitabuPink,
-                        modifier = Modifier.size(55.dp)
+                    Image(
+                        painter = painterResource(
+                            id = book.imageResId
+                        ),
+                        contentDescription = book.title,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
                     )
 
-                    Spacer(
-                        modifier = Modifier.height(8.dp)
-                    )
+                } else {
 
-                    Text(
-                        text = "KITABU",
-                        color = KitabuPink,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    // Fallback if no image has been assigned
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Icon(
+                            imageVector = Icons.Default.Book,
+                            contentDescription = "Book cover",
+                            tint = KitabuPink,
+                            modifier = Modifier.size(55.dp)
+                        )
+
+                        Spacer(
+                            modifier = Modifier.height(8.dp)
+                        )
+
+                        Text(
+                            text = "KITABU",
+                            color = KitabuPink,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
 

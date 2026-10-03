@@ -151,6 +151,7 @@ fun CatalogScreen(
                     title = bookEntity.title,
                     author = bookEntity.author,
                     category = bookEntity.category,
+                    imageResId = bookEntity.imageResId,
                     isAvailable = bookEntity.isAvailable
                 )
 
