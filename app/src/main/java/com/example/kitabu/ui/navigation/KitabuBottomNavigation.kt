@@ -26,7 +26,7 @@ fun KitabuBottomNavigation(
     NavigationBar {
 
 
-        // HOME
+        // HOME SCREEN
 
         NavigationBarItem(
             selected = currentRoute == KitabuRoute.Home.route,

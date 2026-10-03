@@ -77,12 +77,7 @@ fun CatalogScreen(
             )
         )
 
-        /*
-         * SEARCH
-         *
-         * The search value is kept inside the Composable.
-         * The ViewModel performs the actual database search.
-         */
+        //SEARCH
         TextField(
             value = searchText,
 

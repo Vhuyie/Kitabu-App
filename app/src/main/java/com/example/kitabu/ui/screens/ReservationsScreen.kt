@@ -159,9 +159,6 @@ fun ReservationsScreen(
 }
 
 
-// ---------------------------------------------------------
-// PENDING RESERVATION CARD
-// ---------------------------------------------------------
 
 @Composable
 private fun PendingReservationCard(
@@ -287,10 +284,6 @@ private fun PendingReservationCard(
     }
 }
 
-
-// ---------------------------------------------------------
-// RESERVED BOOK CARD
-// ---------------------------------------------------------
 
 @Composable
 private fun ReservedBookCard(
