@@ -3,7 +3,7 @@
 ## Overview
 
 Kitabu is an Android application developed using Kotlin in Android Studio for higher education institution libraries, so what it does
-is that it allows students to search, browse the textbooks on catalog, reserve as well as updating the reservationin realtime and manage textbooks.
+is that it allows students to search, browse the textbooks on catalog, reserve as well as updating the reservation in realtime and manage textbooks.
 
 
 ## Features
