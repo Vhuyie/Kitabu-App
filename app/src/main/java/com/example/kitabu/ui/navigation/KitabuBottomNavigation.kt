@@ -124,30 +124,6 @@ fun KitabuBottomNavigation(
             )
 
 
-            // ADMIN LOGIN
-
-            NavigationBarItem(
-                selected = currentRoute == KitabuRoute.AdminLogin.route,
-
-                onClick = {
-                    navController.navigate(
-                        KitabuRoute.AdminLogin.route
-                    ) {
-                        launchSingleTop = true
-                    }
-                },
-
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.AdminPanelSettings,
-                        contentDescription = "Admin Login"
-                    )
-                },
-
-                label = {
-                    Text("Admin Login")
-                }
-            )
         }
     }
 }

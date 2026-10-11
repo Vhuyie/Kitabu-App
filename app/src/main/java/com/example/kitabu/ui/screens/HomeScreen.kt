@@ -53,7 +53,7 @@ fun HomeScreen(
     viewModel: LibraryViewModel,
     onOpenCatalog: () -> Unit = {},
     onOpenReservations: () -> Unit = {},
-    onAdminLogin: () -> Unit = {}
+
 ) {
 
     // Get books from the ViewModel
@@ -76,12 +76,6 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Header
-            Header(
-                onAdminLogin = onAdminLogin
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
 
             // Search
             SearchBox(
@@ -182,11 +176,8 @@ fun HomeScreen(
 
 
    //HEADER
-
-
 @Composable
 fun Header(
-    onAdminLogin: () -> Unit = {}
 ) {
 
     Row(
@@ -213,24 +204,10 @@ fun Header(
             )
         }
 
-        TextButton(
-            onClick = onAdminLogin
-        ) {
-
-            Text(
-                text = "Admin Login",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = KitabuPink
-            )
-        }
     }
 }
 
-
-
    //SEARCH BOX
-
 
 @Composable
 fun SearchBox(
@@ -290,11 +267,7 @@ fun SearchBox(
     )
 }
 
-
-
    //WELCOME CARD
-
-
 @Composable
 fun WelcomeCard(
     onBrowseBooks: () -> Unit = {}
@@ -350,9 +323,7 @@ fun WelcomeCard(
 }
 
 
-
    //CATEGORIES
-
 
 @Composable
 fun Categories() {
