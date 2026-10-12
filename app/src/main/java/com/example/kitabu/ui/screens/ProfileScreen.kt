@@ -42,7 +42,7 @@ fun ProfileScreen(
         verticalArrangement = Arrangement.Top
     ) {
 
-        // PAGE TITLE
+
         Text(
             text = "My Profile",
             style = MaterialTheme.typography.headlineMedium,
@@ -53,7 +53,7 @@ fun ProfileScreen(
             modifier = Modifier.height(30.dp)
         )
 
-        // PROFILE CARD
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
@@ -69,7 +69,6 @@ fun ProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                // PROFILE ICON
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Profile",
@@ -80,7 +79,6 @@ fun ProfileScreen(
                     modifier = Modifier.height(16.dp)
                 )
 
-                // USER NAME
                 Text(
                     text = "Kitabu Student",
                     style = MaterialTheme.typography.titleLarge,
@@ -91,7 +89,7 @@ fun ProfileScreen(
                     modifier = Modifier.height(6.dp)
                 )
 
-                // USER TYPE
+
                 Text(
                     text = "Library Member",
                     color = KitabuSecondaryText
@@ -101,7 +99,6 @@ fun ProfileScreen(
                     modifier = Modifier.height(25.dp)
                 )
 
-                // ADMIN BUTTON
                 Button(
                     onClick = {
                         onOpenAdminLogin()

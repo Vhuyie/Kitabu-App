@@ -26,7 +26,7 @@ fun KitabuBottomNavigation(
     NavigationBar {
 
 
-        // HOME SCREEN
+        //landing page Home Screen
 
         NavigationBarItem(
             selected = currentRoute == KitabuRoute.Home.route,
@@ -51,7 +51,7 @@ fun KitabuBottomNavigation(
         )
 
 
-        // CATALOG / MANAGE BOOKS
+        // Catalog to manage books.
 
         NavigationBarItem(
             selected = if (isAdmin) {
@@ -93,10 +93,6 @@ fun KitabuBottomNavigation(
                 )
             }
         )
-
-
-        // RENTALS
-        // Student only
 
         if (!isAdmin) {
 

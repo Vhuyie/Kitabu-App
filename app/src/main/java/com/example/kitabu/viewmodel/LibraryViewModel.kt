@@ -94,7 +94,7 @@ class LibraryViewModel(
         }
     }
 
-    // Renew a reserved book
+
     fun renewBooking(
         bookingId: Int,
         days: Int = 1
@@ -108,7 +108,7 @@ class LibraryViewModel(
         }
     }
 
-    // Return a reserved book
+
     fun returnBook(
         bookingId: Int
     ) {
@@ -120,7 +120,6 @@ class LibraryViewModel(
         }
     }
 
-    // ADMIN - ADD BOOK
     fun addBook(
         title: String,
         author: String,
@@ -139,7 +138,6 @@ class LibraryViewModel(
         }
     }
 
-    // ADMIN - UPDATE BOOK
     fun updateBook(
         book: BookEntity
     ) {
@@ -149,7 +147,7 @@ class LibraryViewModel(
         }
     }
 
-    // ADMIN - DELETE BOOK
+
     fun deleteBook(
         book: BookEntity
     ) {
@@ -159,7 +157,7 @@ class LibraryViewModel(
         }
     }
 
-    // STUDENT REGISTRATION
+
     fun registerStudent(
         fullName: String,
         studentNumber: String,
@@ -191,36 +189,6 @@ class LibraryViewModel(
                     false,
                     result.exceptionOrNull()?.message
                         ?: "Registration failed."
-                )
-            }
-        }
-    }
-
-    // STUDENT LOGIN
-    fun loginStudent(
-        username: String,
-        password: String,
-        onResult: (Boolean, String) -> Unit
-    ) {
-        viewModelScope.launch {
-
-            val student = repository.loginStudent(
-                username = username,
-                password = password
-            )
-
-            if (student != null) {
-
-                onResult(
-                    true,
-                    "Login successful."
-                )
-
-            } else {
-
-                onResult(
-                    false,
-                    "Invalid username or password."
                 )
             }
         }

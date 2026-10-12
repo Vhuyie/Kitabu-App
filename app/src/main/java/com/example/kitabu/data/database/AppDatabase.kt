@@ -40,12 +40,6 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        /**
-         * Migration from database version 1 to version 2.
-         *
-         * Adds the students table without deleting
-         * existing books or bookings.
-         */
         private val MIGRATION_1_2 = object : Migration(1, 2) {
 
             override fun migrate(
@@ -91,11 +85,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        /**
-         * Migration from database version 2 to version 3.
-         *
-         * Adds the imageResId column to the books table.
-         */
+
         private val MIGRATION_2_3 = object : Migration(2, 3) {
 
             override fun migrate(

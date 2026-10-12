@@ -56,8 +56,7 @@ class LibraryRepository(
 
             bookingDao.insertBooking(booking)
 
-            // Book is no longer available while the reservation
-            // is waiting for the Accept/Cancel decision.
+            // Book is no longer available while the reservation is waiting for the Accept/Cancel decision.
             bookDao.updateAvailability(
                 bookId = book.bookId,
                 available = false

@@ -207,7 +207,7 @@ fun Header(
     }
 }
 
-   //SEARCH BOX
+
 
 @Composable
 fun SearchBox(
@@ -267,7 +267,6 @@ fun SearchBox(
     )
 }
 
-   //WELCOME CARD
 @Composable
 fun WelcomeCard(
     onBrowseBooks: () -> Unit = {}
@@ -323,8 +322,6 @@ fun WelcomeCard(
 }
 
 
-   //CATEGORIES
-
 @Composable
 fun Categories() {
 
@@ -353,9 +350,6 @@ fun Categories() {
     }
 }
 
-
-
-   //CATEGORY ITEM
 
 @Composable
 fun CategoryItem(
@@ -394,11 +388,6 @@ fun CategoryItem(
         }
     }
 }
-
-
-
-   //SECTION TITLE
-
 
 @Composable
 fun SectionTitle(

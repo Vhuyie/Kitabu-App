@@ -67,7 +67,7 @@ fun StudentLoginScreen(
         verticalArrangement = Arrangement.Center
     ) {
 
-        // KITABU LOGO
+
         Icon(
             imageVector = Icons.Default.Book,
             contentDescription = "Kitabu",
@@ -134,7 +134,7 @@ fun StudentLoginScreen(
                     modifier = Modifier.height(22.dp)
                 )
 
-                // USERNAME
+
                 OutlinedTextField(
                     value = username,
                     onValueChange = {
@@ -158,7 +158,7 @@ fun StudentLoginScreen(
                     modifier = Modifier.height(14.dp)
                 )
 
-                // PASSWORD
+
                 OutlinedTextField(
                     value = password,
                     onValueChange = {
@@ -183,7 +183,7 @@ fun StudentLoginScreen(
                     modifier = Modifier.height(10.dp)
                 )
 
-                // ERROR
+
                 if (errorMessage.isNotEmpty()) {
 
                     Text(
@@ -196,7 +196,7 @@ fun StudentLoginScreen(
                     modifier = Modifier.height(18.dp)
                 )
 
-                // LOGIN
+
                 Button(
                     onClick = {
 
@@ -224,7 +224,7 @@ fun StudentLoginScreen(
                     modifier = Modifier.height(12.dp)
                 )
 
-                // REGISTER
+
                 OutlinedButton(
                     onClick = onRegister,
                     modifier = Modifier.fillMaxWidth()
@@ -238,7 +238,7 @@ fun StudentLoginScreen(
             modifier = Modifier.height(20.dp)
         )
 
-        // ADMIN LOGIN
+
         Text(
             text = "Library administrator?",
             color = KitabuSecondaryText
@@ -259,7 +259,7 @@ fun StudentLoginScreen(
         )
 
         Text(
-            text = "Demo student: student / student123",
+            text = "student: student / student123",
             style = MaterialTheme.typography.labelSmall,
             color = KitabuSecondaryText
         )

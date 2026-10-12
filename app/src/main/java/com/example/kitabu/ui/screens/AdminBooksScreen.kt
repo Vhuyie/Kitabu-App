@@ -208,7 +208,7 @@ fun AdminBooksScreen(
         )
     }
 
-    // EDIT BOOK
+    // Editing a book.
     bookToEdit?.let { book ->
 
         BookDialog(
@@ -232,7 +232,7 @@ fun AdminBooksScreen(
         )
     }
 
-    // DELETE BOOK
+    // Deleting a book.
     bookToDelete?.let { book ->
 
         AlertDialog(

@@ -112,7 +112,7 @@ fun ReservationsScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                // PENDING RESERVATIONS
+
                 items(
                     items = pendingBookings,
                     key = { it.booking.bookingId }
@@ -133,7 +133,7 @@ fun ReservationsScreen(
                     )
                 }
 
-                // RESERVED BOOKS
+
                 items(
                     items = reservedBookings,
                     key = { it.booking.bookingId }

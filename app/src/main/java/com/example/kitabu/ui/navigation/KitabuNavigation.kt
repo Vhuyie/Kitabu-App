@@ -21,6 +21,9 @@ sealed class KitabuRoute(
     data object Catalog : KitabuRoute("catalog", "Catalog")
     data object Reservations : KitabuRoute("reservations", "Rentals")
 
+    object AdminBooks : KitabuRoute("admin_books", "admin label")
+
+
 }
 
 @Composable
@@ -36,7 +39,7 @@ fun KitabuNavigation(viewModel: LibraryViewModel) {
         modifier = Modifier.padding(paddingValues)
         ) {
 
-            // STUDENT HOME SCREEN
+            // Student Home Screen.
             composable(KitabuRoute.Home.route) {
                 HomeScreen(
                     viewModel = viewModel,
@@ -49,7 +52,7 @@ fun KitabuNavigation(viewModel: LibraryViewModel) {
                 )
             }
 
-            // CATALOG
+            // Catalog
 
             composable(KitabuRoute.Catalog.route) {
                 CatalogScreen(
@@ -57,14 +60,12 @@ fun KitabuNavigation(viewModel: LibraryViewModel) {
                 )
             }
 
-            // RENTALS
+            // Renting a book screen.
             composable(KitabuRoute.Reservations.route) {
                 ReservationsScreen(
                     viewModel = viewModel
                 )
             }
-
-            // REGISTER
 
             composable("student_register") {
                 StudentRegisterScreen(

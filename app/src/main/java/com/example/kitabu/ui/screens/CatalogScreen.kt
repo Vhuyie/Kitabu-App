@@ -77,7 +77,7 @@ fun CatalogScreen(
             )
         )
 
-        //SEARCH
+        //Search bar
         TextField(
             value = searchText,
 
@@ -117,9 +117,6 @@ fun CatalogScreen(
             )
         )
 
-        /*
-         * BOOK GRID
-         */
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
 
@@ -161,9 +158,7 @@ fun CatalogScreen(
         }
     }
 
-    /*
-     * RESERVATION BOTTOM SHEET
-     */
+
     selectedBook?.let { book ->
 
         ModalBottomSheet(
