@@ -39,7 +39,6 @@ The project includes:
 
 * Book catalogue
 * Book reservations
-* Admin management
 * Local database storage
 
 ## Authors
